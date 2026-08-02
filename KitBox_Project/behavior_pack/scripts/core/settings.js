@@ -1,0 +1,1 @@
+export const KITBOX_SETTINGS={DEBUG:false,CHAT_MESSAGE:true,PLAY_SOUND:true,PLAY_PARTICLES:true};
