@@ -35,33 +35,27 @@ jobs:
               node --check "$file"
             done
 
-      - name: Build MCPACK files
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p dist
-          (
-            cd KitBox_Project/behavior_pack
-            zip -qr ../../dist/KitBox_Behavior.mcpack .
-          )
-          (
-            cd KitBox_Project/resource_pack
-            zip -qr ../../dist/KitBox_Resource.mcpack .
-          )
-
       - name: Build MCADDON
         shell: bash
         run: |
           set -euo pipefail
+          rm -rf dist
+          mkdir -p dist
           (
-            cd dist
-            zip -q KitBox.mcaddon KitBox_Behavior.mcpack KitBox_Resource.mcpack
+            cd KitBox_Project
+            zip -qr ../dist/Kitbox.mcaddon behavior_pack resource_pack
           )
-          unzip -l dist/KitBox.mcaddon
+          unzip -l dist/Kitbox.mcaddon
+          unzip -Z1 dist/Kitbox.mcaddon | grep -q '^behavior_pack/manifest.json$'
+          unzip -Z1 dist/Kitbox.mcaddon | grep -q '^resource_pack/manifest.json$'
+          if unzip -Z1 dist/Kitbox.mcaddon | grep -Eq '\.mcpack$'; then
+            echo 'ERROR: .mcpack files must not be embedded in the .mcaddon.'
+            exit 1
+          fi
 
       - name: Upload addon artifact
         uses: actions/upload-artifact@v4
         with:
-          name: KitBox-mcaddon
-          path: dist/KitBox.mcaddon
+          name: Kitbox-mcaddon
+          path: dist/Kitbox.mcaddon
           if-no-files-found: error
