@@ -4,14 +4,14 @@
     "name": "KitBox Resource Pack",
     "description": "KitBox Resource Pack",
     "uuid": "2f1e4fb7-0a3d-4cb7-8f0c-0e9e32d2f201",
-    "version": [1, 0, 0],
+    "version": [1, 0, 1],
     "min_engine_version": [1, 21, 90]
   },
   "modules": [
     {
       "type": "resources",
       "uuid": "f39df1db-5c7d-4e4b-9fd5-f4b52fb3a302",
-      "version": [1, 0, 0]
+      "version": [1, 0, 1]
     }
   ]
 }
