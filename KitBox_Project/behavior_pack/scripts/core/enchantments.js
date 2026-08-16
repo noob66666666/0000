@@ -1,1 +1,20 @@
-// TODO
+export const ENCHANTMENT_IDS = Object.freeze({
+  protection: 'minecraft:protection',
+  fire_protection: 'minecraft:fire_protection',
+  blast_protection: 'minecraft:blast_protection',
+  projectile_protection: 'minecraft:projectile_protection',
+  respiration: 'minecraft:respiration',
+  aqua_affinity: 'minecraft:aqua_affinity',
+  unbreaking: 'minecraft:unbreaking',
+  mending: 'minecraft:mending',
+  feather_falling: 'minecraft:feather_falling',
+  depth_strider: 'minecraft:depth_strider',
+  frost_walker: 'minecraft:frost_walker',
+  soul_speed: 'minecraft:soul_speed',
+  swift_sneak: 'minecraft:swift_sneak',
+  efficiency: 'minecraft:efficiency',
+  fortune: 'minecraft:fortune',
+  silk_touch: 'minecraft:silk_touch',
+  luck_of_the_sea: 'minecraft:luck_of_the_sea',
+  lure: 'minecraft:lure',
+});
