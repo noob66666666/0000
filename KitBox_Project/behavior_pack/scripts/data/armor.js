@@ -28,7 +28,7 @@ export const ARMOR = [
     id: `leggings_${id}`,
     item: 'minecraft:netherite_leggings',
     count: 1,
-    enchantments: enchants([type, level], [['swift_sneak', 3]]),
+    enchantments: enchants([type, level]),
   })),
   ...PROTECTION.flatMap(([type, level, id]) => [
     {
@@ -47,7 +47,7 @@ export const ARMOR = [
       id: `boots_${id}_soul_speed`,
       item: 'minecraft:netherite_boots',
       count: 1,
-      enchantments: enchants([type, level], [['feather_falling', 4], ['depth_strider', 3], ['soul_speed', 3]]),
+      enchantments: enchants([type, level], [['feather_falling', 4], ['soul_speed', 3]]),
     },
   ]),
 ];
