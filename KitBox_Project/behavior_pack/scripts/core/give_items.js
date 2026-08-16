@@ -2,8 +2,15 @@ import { EQUIPMENT_SETS } from './equipment_sets.js';
 import { createEquipment } from './equipment_factory.js';
 import { getInventory } from './inventory.js';
 
+function getRequestedAmount(definition) {
+  return definition.count ?? definition.amount ?? 1;
+}
+
 function dropRemaining(player, remaining) {
-  if (!remaining || remaining.amount <= 0 || !player.dimension) return false;
+  if (!remaining || remaining.amount <= 0 || !player?.dimension || !player?.location) {
+    return false;
+  }
+
   try {
     player.dimension.spawnItem(remaining, player.location);
     return true;
@@ -20,11 +27,14 @@ export function giveAll(player) {
   const result = { granted: 0, dropped: 0, failed: 0 };
 
   for (const definition of EQUIPMENT_SETS) {
+    const requestedAmount = getRequestedAmount(definition);
+
     try {
       const item = createEquipment(definition);
       const remaining = inventory.addItem(item);
       const remainingAmount = remaining?.amount ?? 0;
-      result.granted += item.amount - remainingAmount;
+
+      result.granted += requestedAmount - remainingAmount;
 
       if (remainingAmount > 0) {
         if (dropRemaining(player, remaining)) {
@@ -34,8 +44,8 @@ export function giveAll(player) {
         }
       }
     } catch (error) {
-      result.failed += definition.count ?? definition.amount ?? 1;
-      console.warn(`[KitBox] Failed to give ${definition.id}: ${error}`);
+      result.failed += requestedAmount;
+      console.warn(`[KitBox] Failed to give ${definition.id ?? definition.item}: ${error}`);
     }
   }
 
