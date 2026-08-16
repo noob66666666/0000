@@ -1,0 +1,67 @@
+name: Build KitBox addon
+
+on:
+  push:
+    paths:
+      - 'KitBox_Project/**'
+      - '.github/workflows/kitbox-build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate JSON files
+        shell: bash
+        run: |
+          set -euo pipefail
+          find KitBox_Project/behavior_pack KitBox_Project/resource_pack -type f -name '*.json' -print0 |
+            while IFS= read -r -d '' file; do
+              python -m json.tool "$file" >/dev/null
+            done
+
+      - name: Validate JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          find KitBox_Project/behavior_pack/scripts -type f -name '*.js' -print0 |
+            while IFS= read -r -d '' file; do
+              node --check "$file"
+            done
+
+      - name: Build MCPACK files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          (
+            cd KitBox_Project/behavior_pack
+            zip -qr ../../dist/KitBox_Behavior.mcpack .
+          )
+          (
+            cd KitBox_Project/resource_pack
+            zip -qr ../../dist/KitBox_Resource.mcpack .
+          )
+
+      - name: Build MCADDON
+        shell: bash
+        run: |
+          set -euo pipefail
+          (
+            cd dist
+            zip -q KitBox.mcaddon KitBox_Behavior.mcpack KitBox_Resource.mcpack
+          )
+          unzip -l dist/KitBox.mcaddon
+
+      - name: Upload addon artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: KitBox-mcaddon
+          path: dist/KitBox.mcaddon
+          if-no-files-found: error
