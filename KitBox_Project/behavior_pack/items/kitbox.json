@@ -13,7 +13,10 @@
         "value": "item.kitbox.name"
       },
       "minecraft:max_stack_size": 1,
-      "minecraft:foil": true
+      "minecraft:foil": true,
+      "minecraft:custom_components": [
+        "kitbox:use_kitbox"
+      ]
     }
   }
 }
