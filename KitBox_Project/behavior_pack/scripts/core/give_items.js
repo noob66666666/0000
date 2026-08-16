@@ -1,4 +1,4 @@
-import { EQUIPMENT_SETS } from './equipment_sets.js';
+import { getEquipmentDefinitions } from './equipment_sets.js';
 import { createEquipment } from './equipment_factory.js';
 import { getInventory } from './inventory.js';
 
@@ -26,7 +26,7 @@ export function giveAll(player) {
 
   const result = { granted: 0, dropped: 0, failed: 0 };
 
-  for (const definition of EQUIPMENT_SETS) {
+  for (const definition of getEquipmentDefinitions()) {
     const requestedAmount = getRequestedAmount(definition);
 
     try {
