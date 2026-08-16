@@ -1,3 +1,6 @@
-import "./components/kitbox_component.js";
-import { world } from "@minecraft/server";
-world.beforeEvents.worldInitialize.subscribe(()=>{});
+import { system } from "@minecraft/server";
+import { registerKitBoxComponent } from "./components/kitbox_component.js";
+
+system.beforeEvents.startup.subscribe((initEvent) => {
+  registerKitBoxComponent(initEvent.itemComponentRegistry);
+});
