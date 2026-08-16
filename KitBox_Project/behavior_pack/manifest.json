@@ -4,7 +4,7 @@
     "name": "KitBox Behavior Pack",
     "description": "KitBox Add-on Behavior Pack",
     "uuid": "d4dd0ef8-73c8-4d40-b163-97d5b2d3d101",
-    "version": [1, 0, 1],
+    "version": [1, 0, 2],
     "min_engine_version": [1, 21, 90]
   },
   "modules": [
@@ -12,7 +12,7 @@
       "type": "script",
       "language": "javascript",
       "uuid": "a4b8b95d-9ec5-4d4f-a3d8-faf38a6a7102",
-      "version": [1, 0, 1],
+      "version": [1, 0, 2],
       "entry": "scripts/main.js"
     }
   ],
@@ -23,7 +23,7 @@
     },
     {
       "uuid": "2f1e4fb7-0a3d-4cb7-8f0c-0e9e32d2f201",
-      "version": [1, 0, 1]
+      "version": [1, 0, 2]
     }
   ]
 }
