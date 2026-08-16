@@ -40,18 +40,34 @@ jobs:
         run: |
           set -euo pipefail
           rm -rf dist
-          mkdir -p dist
+          mkdir -p dist/bp dist/rp
+
+          # Minecraft's .mcaddon format is a ZIP container of .mcpack files.
+          # The raw behavior/resource pack folders remain the editable project source.
           (
-            cd KitBox_Project
-            zip -qr ../dist/Kitbox.mcaddon behavior_pack resource_pack
+            cd KitBox_Project/behavior_pack
+            zip -qr ../../dist/bp/Kitbox_Behavior.mcpack .
           )
+          (
+            cd KitBox_Project/resource_pack
+            zip -qr ../../dist/rp/Kitbox_Resource.mcpack .
+          )
+
+          cd dist
+          zip -q Kitbox.mcaddon bp/Kitbox_Behavior.mcpack rp/Kitbox_Resource.mcpack
+          cd ..
+
           unzip -l dist/Kitbox.mcaddon
-          unzip -Z1 dist/Kitbox.mcaddon | grep -q '^behavior_pack/manifest.json$'
-          unzip -Z1 dist/Kitbox.mcaddon | grep -q '^resource_pack/manifest.json$'
-          if unzip -Z1 dist/Kitbox.mcaddon | grep -Eq '\.mcpack$'; then
-            echo 'ERROR: .mcpack files must not be embedded in the .mcaddon.'
-            exit 1
-          fi
+          unzip -Z1 dist/Kitbox.mcaddon | grep -q '^bp/Kitbox_Behavior.mcpack$'
+          unzip -Z1 dist/Kitbox.mcaddon | grep -q '^rp/Kitbox_Resource.mcpack$'
+
+          rm -rf dist/inspect
+          mkdir -p dist/inspect/bp dist/inspect/rp
+          unzip -q dist/bp/Kitbox_Behavior.mcpack -d dist/inspect/bp
+          unzip -q dist/rp/Kitbox_Resource.mcpack -d dist/inspect/rp
+          test -f dist/inspect/bp/manifest.json
+          test -f dist/inspect/rp/manifest.json
+          test -f dist/inspect/bp/items/kitbox.json
 
       - name: Upload addon artifact
         uses: actions/upload-artifact@v4
