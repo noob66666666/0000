@@ -5,19 +5,30 @@ function getEnchantmentType(id) {
   return EnchantmentTypes.get(normalizedId);
 }
 
-export function createEquipment(def) {
-  if (!def?.item) throw new Error('Equipment definition is missing item id');
+function validateDefinition(def) {
+  if (!def || typeof def !== 'object') {
+    throw new Error('Equipment definition is missing');
+  }
+  if (typeof def.item !== 'string' || def.item.length === 0) {
+    throw new Error('Equipment definition is missing item id');
+  }
 
   const amount = def.count ?? def.amount ?? 1;
-  if (!Number.isInteger(amount) || amount < 1) {
+  if (!Number.isInteger(amount) || amount < 1 || amount > 255) {
     throw new Error(`Invalid item amount ${amount} for ${def.item}`);
   }
 
-  const item = new ItemStack(def.item, amount);
   const enchantments = def.enchantments ?? [];
   if (!Array.isArray(enchantments)) {
     throw new Error(`Invalid enchantments definition for ${def.item}`);
   }
+
+  return { amount, enchantments };
+}
+
+export function createEquipment(def) {
+  const { amount, enchantments } = validateDefinition(def);
+  const item = new ItemStack(def.item, amount);
 
   if (enchantments.length === 0) return item;
 
@@ -32,7 +43,7 @@ export function createEquipment(def) {
     }
 
     const [id, level] = entry;
-    if (typeof id !== 'string' || !Number.isInteger(level) || level < 1) {
+    if (typeof id !== 'string' || id.length === 0 || !Number.isInteger(level) || level < 1) {
       throw new Error(`Invalid enchantment ${id} ${level} for ${def.item}`);
     }
 
