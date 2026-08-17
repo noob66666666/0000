@@ -8,15 +8,15 @@
       }
     },
     "components": {
-      "minecraft:icon": "kitbox",
+      "minecraft:icon": {
+        "texture": "kitbox"
+      },
       "minecraft:display_name": {
         "value": "item.kitbox.name"
       },
       "minecraft:max_stack_size": 1,
       "minecraft:foil": true,
-      "minecraft:custom_components": [
-        "kitbox:use_kitbox"
-      ]
+      "kitbox:use_kitbox": {}
     }
   }
 }
