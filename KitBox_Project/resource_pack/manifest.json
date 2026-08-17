@@ -1,17 +1,17 @@
 {
   "format_version": 2,
   "header": {
-    "name": "KitBox Resource Pack",
+    "name": "KitBox Resource Pack Test 2",
     "description": "KitBox Resource Pack",
-    "uuid": "2f1e4fb7-0a3d-4cb7-8f0c-0e9e32d2f201",
-    "version": [1, 0, 2],
+    "uuid": "8e51b7d4-29c6-46fa-91b3-7d02e5c84a16",
+    "version": [2, 0, 0],
     "min_engine_version": [1, 21, 90]
   },
   "modules": [
     {
       "type": "resources",
-      "uuid": "f39df1db-5c7d-4e4b-9fd5-f4b52fb3a302",
-      "version": [1, 0, 2]
+      "uuid": "b7c4e9a2-15f6-43d8-90ab-6e27c1f58430",
+      "version": [2, 0, 0]
     }
   ]
 }
