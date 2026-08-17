@@ -4,15 +4,15 @@
     "description": {
       "identifier": "kitbox:equipment_box",
       "menu_category": {
-        "category": "equipment"
+        "category": "none"
       }
     },
     "components": {
       "minecraft:display_name": {
-        "value": "item.kitbox.equipment_box.name"
+        "value": "item.kitbox.shulker_box.name"
       },
       "minecraft:icon": {
-        "texture": "kitbox_equipment_box"
+        "texture": "kitbox_shulker_box"
       },
       "minecraft:max_stack_size": 1,
       "minecraft:storage_item": {
