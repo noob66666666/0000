@@ -1,4 +1,7 @@
-pack.name=KitBox Resource Pack
-pack.description=KitBox Resource Pack
+pack.name=SupplyVault Resource Pack
+pack.description=SupplyVault Resource Pack
 
-item.kitbox.name=KitBox
+item.kitbox.name=SupplyVault
+item.kitbox.equipment_box.name=SupplyVault Equipment Box
+item.kitbox.tools_box.name=SupplyVault Tools Box
+item.kitbox.supplies_box.name=SupplyVault Supplies Box
