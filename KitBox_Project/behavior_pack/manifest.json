@@ -1,10 +1,10 @@
 {
   "format_version": 2,
   "header": {
-    "name": "KitBox Behavior Pack Test 2",
-    "description": "KitBox Add-on Behavior Pack",
+    "name": "SupplyVault Behavior Pack",
+    "description": "SupplyVault Add-on Behavior Pack",
     "uuid": "7f3a1c2e-6b44-4f91-8d27-5c0e9a71b632",
-    "version": [2, 0, 2],
+    "version": [2, 0, 3],
     "min_engine_version": [1, 21, 90]
   },
   "modules": [
@@ -12,7 +12,7 @@
       "type": "script",
       "language": "javascript",
       "uuid": "9a62d5f1-3c87-4b20-ae54-1f7380c96d42",
-      "version": [2, 0, 2],
+      "version": [2, 0, 3],
       "entry": "scripts/main.js"
     }
   ],
@@ -23,7 +23,7 @@
     },
     {
       "uuid": "8e51b7d4-29c6-46fa-91b3-7d02e5c84a16",
-      "version": [2, 0, 2]
+      "version": [2, 0, 3]
     }
   ]
 }
