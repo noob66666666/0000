@@ -1,18 +1,18 @@
 {
   "format_version": 2,
   "header": {
-    "name": "KitBox Behavior Pack",
+    "name": "KitBox Behavior Pack Test 2",
     "description": "KitBox Add-on Behavior Pack",
-    "uuid": "d4dd0ef8-73c8-4d40-b163-97d5b2d3d101",
-    "version": [1, 0, 2],
+    "uuid": "7f3a1c2e-6b44-4f91-8d27-5c0e9a71b632",
+    "version": [2, 0, 0],
     "min_engine_version": [1, 21, 90]
   },
   "modules": [
     {
       "type": "script",
       "language": "javascript",
-      "uuid": "a4b8b95d-9ec5-4d4f-a3d8-faf38a6a7102",
-      "version": [1, 0, 2],
+      "uuid": "9a62d5f1-3c87-4b20-ae54-1f7380c96d42",
+      "version": [2, 0, 0],
       "entry": "scripts/main.js"
     }
   ],
@@ -22,8 +22,8 @@
       "version": "1.19.0"
     },
     {
-      "uuid": "2f1e4fb7-0a3d-4cb7-8f0c-0e9e32d2f201",
-      "version": [1, 0, 2]
+      "uuid": "8e51b7d4-29c6-46fa-91b3-7d02e5c84a16",
+      "version": [2, 0, 0]
     }
   ]
 }
