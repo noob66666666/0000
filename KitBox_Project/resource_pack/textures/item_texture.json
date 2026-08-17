@@ -1,17 +1,11 @@
 {
-  "resource_pack_name": "KitBox Resource Pack",
+  "resource_pack_name": "SupplyVault",
   "texture_name": "atlas.items",
   "texture_data": {
     "kitbox": {
       "textures": "textures/items/ender_pearl"
     },
-    "kitbox_equipment_box": {
-      "textures": "textures/items/shulker_box"
-    },
-    "kitbox_tools_box": {
-      "textures": "textures/items/shulker_box"
-    },
-    "kitbox_supplies_box": {
+    "kitbox_shulker_box": {
       "textures": "textures/items/shulker_box"
     }
   }
