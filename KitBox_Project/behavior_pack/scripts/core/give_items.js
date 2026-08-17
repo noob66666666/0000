@@ -10,7 +10,7 @@ import { getInventory } from './inventory.js';
 // 1. 工具 + 武器
 // 2. 防具
 // 3. 其他物品 / 補給
-a const BOXES = Object.freeze([
+const BOXES = Object.freeze([
   { id: 'kitbox:tools_box', definitions: [...TOOLS, ...WEAPONS] },
   { id: 'kitbox:equipment_box', definitions: ARMOR },
   { id: 'kitbox:supplies_box', definitions: MISC },
