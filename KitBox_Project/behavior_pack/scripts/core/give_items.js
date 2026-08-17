@@ -10,11 +10,18 @@ import { getInventory } from './inventory.js';
 // 1. 工具 + 武器
 // 2. 防具
 // 3. 其他物品 / 補給
-const BOXES = Object.freeze([
+a const BOXES = Object.freeze([
   { id: 'kitbox:tools_box', definitions: [...TOOLS, ...WEAPONS] },
   { id: 'kitbox:equipment_box', definitions: ARMOR },
   { id: 'kitbox:supplies_box', definitions: MISC },
 ]);
+
+function describeError(error) {
+  if (error instanceof Error) {
+    return `${error.name}: ${error.message}${error.stack ? `\n${error.stack}` : ''}`;
+  }
+  return String(error);
+}
 
 function addDefinitionToContainer(container, definition) {
   const item = createEquipment({
@@ -29,43 +36,73 @@ function addDefinitionToContainer(container, definition) {
 }
 
 function createFilledBox(boxDefinition) {
-  // Create the storage item directly. The storage component supplies the
-  // item's dynamic inventory; no ordinary entity/block inventory is needed.
-  const box = new ItemStack(boxDefinition.id, 1);
-  const inventory = box.getComponent('minecraft:inventory');
+  console.warn(`[KitBox] Creating storage box: ${boxDefinition.id}`);
+
+  let box;
+  try {
+    box = new ItemStack(boxDefinition.id, 1);
+    console.warn(`[KitBox] ItemStack created: ${box.typeId}`);
+  } catch (error) {
+    throw new Error(`new ItemStack failed for ${boxDefinition.id}: ${describeError(error)}`);
+  }
+
+  let inventory;
+  try {
+    inventory = box.getComponent('minecraft:inventory');
+    console.warn(`[KitBox] inventory component: ${inventory ? 'found' : 'missing'}`);
+  } catch (error) {
+    throw new Error(`getComponent(minecraft:inventory) failed for ${boxDefinition.id}: ${describeError(error)}`);
+  }
 
   if (!inventory?.container) {
     throw new Error(`Storage item has no dynamic inventory: ${boxDefinition.id}`);
   }
 
+  console.warn(`[KitBox] container size for ${boxDefinition.id}: ${inventory.container.size}`);
+
   for (const definition of boxDefinition.definitions) {
-    addDefinitionToContainer(inventory.container, definition);
+    try {
+      addDefinitionToContainer(inventory.container, definition);
+    } catch (error) {
+      throw new Error(`Adding ${definition.id ?? definition.item} to ${boxDefinition.id} failed: ${describeError(error)}`);
+    }
   }
 
+  console.warn(`[KitBox] Storage box filled: ${boxDefinition.id}`);
   return box;
 }
 
 function addBoxToPlayer(player, inventory, box) {
-  const remaining = inventory.addItem(box);
-  if (!remaining || remaining.amount <= 0) {
-    return { granted: 1, dropped: 0, failed: 0 };
-  }
-
-  if (player?.dimension && player?.location) {
-    try {
-      player.dimension.spawnItem(remaining, player.location);
-      return { granted: 0, dropped: remaining.amount, failed: 0 };
-    } catch (error) {
-      console.warn(`[KitBox] Failed to drop storage box ${remaining.typeId}: ${error}`);
+  try {
+    const remaining = inventory.addItem(box);
+    if (!remaining || remaining.amount <= 0) {
+      console.warn(`[KitBox] Storage box granted: ${box.typeId}`);
+      return { granted: 1, dropped: 0, failed: 0 };
     }
-  }
 
-  return { granted: 0, dropped: 0, failed: remaining.amount };
+    if (player?.dimension && player?.location) {
+      try {
+        player.dimension.spawnItem(remaining, player.location);
+        console.warn(`[KitBox] Storage box dropped: ${remaining.typeId}`);
+        return { granted: 0, dropped: remaining.amount, failed: 0 };
+      } catch (error) {
+        console.warn(`[KitBox] Failed to drop storage box ${remaining.typeId}: ${describeError(error)}`);
+      }
+    }
+
+    return { granted: 0, dropped: 0, failed: remaining.amount };
+  } catch (error) {
+    console.warn(`[KitBox] inventory.addItem failed for ${box.typeId}: ${describeError(error)}`);
+    return { granted: 0, dropped: 0, failed: 1 };
+  }
 }
 
 export function giveAll(player) {
   const inventory = getInventory(player);
-  if (!inventory) return { granted: 0, dropped: 0, failed: 0 };
+  if (!inventory) {
+    console.warn('[KitBox] Player inventory component/container is unavailable.');
+    return { granted: 0, dropped: 0, failed: BOXES.length };
+  }
 
   const result = { granted: 0, dropped: 0, failed: 0 };
 
@@ -77,10 +114,11 @@ export function giveAll(player) {
       result.dropped += boxResult.dropped;
       result.failed += boxResult.failed;
     } catch (error) {
-      console.warn(`[KitBox] Failed to create storage box ${boxDefinition.id}: ${error}`);
+      console.warn(`[KitBox] FAILED ${boxDefinition.id}: ${describeError(error)}`);
       result.failed += 1;
     }
   }
 
+  console.warn(`[KitBox] giveAll result: granted=${result.granted}, dropped=${result.dropped}, failed=${result.failed}`);
   return result;
 }
