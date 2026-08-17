@@ -1,23 +1,56 @@
-import { getEquipmentDefinitions } from './equipment_sets.js';
+import { ARMOR } from '../data/armor.js';
+import { TOOLS } from '../data/tools.js';
+import { MISC } from '../data/misc.js';
 import { createEquipment } from './equipment_factory.js';
 import { getInventory } from './inventory.js';
 
-function getRequestedAmount(definition) {
-  return definition.count ?? definition.amount ?? 1;
+const BOXES = Object.freeze([
+  { id: 'kitbox:equipment_box', definitions: ARMOR },
+  { id: 'kitbox:tools_box', definitions: TOOLS },
+  { id: 'kitbox:supplies_box', definitions: MISC },
+]);
+
+function addDefinitionToContainer(container, definition) {
+  const item = createEquipment(definition);
+  const remaining = container.addItem(item);
+  if (remaining?.amount > 0) {
+    throw new Error(`Storage box is full while adding ${definition.id ?? definition.item}`);
+  }
 }
 
-function dropRemaining(player, remaining) {
-  if (!remaining || remaining.amount <= 0 || !player?.dimension || !player?.location) {
-    return false;
+function createFilledBox(boxDefinition) {
+  const box = createEquipment({
+    id: boxDefinition.id,
+    item: boxDefinition.id,
+    count: 1,
+  });
+
+  const inventory = box.getComponent('minecraft:inventory');
+  if (!inventory?.container) {
+    throw new Error(`Storage item has no inventory component: ${boxDefinition.id}`);
   }
 
-  try {
-    player.dimension.spawnItem(remaining, player.location);
-    return true;
-  } catch (error) {
-    console.warn(`[KitBox] Failed to drop remaining ${remaining.typeId}: ${error}`);
-    return false;
+  for (const definition of boxDefinition.definitions) {
+    addDefinitionToContainer(inventory.container, definition);
   }
+
+  return box;
+}
+
+function addBoxToPlayer(player, inventory, box) {
+  const remaining = inventory.addItem(box);
+  if (!remaining) return { granted: 1, dropped: 0, failed: 0 };
+
+  if (remaining.amount > 0 && player?.dimension && player?.location) {
+    try {
+      player.dimension.spawnItem(remaining, player.location);
+      return { granted: 0, dropped: remaining.amount, failed: 0 };
+    } catch (error) {
+      console.warn(`[KitBox] Failed to drop storage box ${remaining.typeId}: ${error}`);
+    }
+  }
+
+  return { granted: 0, dropped: 0, failed: remaining.amount };
 }
 
 export function giveAll(player) {
@@ -26,26 +59,16 @@ export function giveAll(player) {
 
   const result = { granted: 0, dropped: 0, failed: 0 };
 
-  for (const definition of getEquipmentDefinitions()) {
-    const requestedAmount = getRequestedAmount(definition);
-
+  for (const boxDefinition of BOXES) {
     try {
-      const item = createEquipment(definition);
-      const remaining = inventory.addItem(item);
-      const remainingAmount = remaining?.amount ?? 0;
-
-      result.granted += requestedAmount - remainingAmount;
-
-      if (remainingAmount > 0) {
-        if (dropRemaining(player, remaining)) {
-          result.dropped += remainingAmount;
-        } else {
-          result.failed += remainingAmount;
-        }
-      }
+      const box = createFilledBox(boxDefinition);
+      const boxResult = addBoxToPlayer(player, inventory, box);
+      result.granted += boxResult.granted;
+      result.dropped += boxResult.dropped;
+      result.failed += boxResult.failed;
     } catch (error) {
-      result.failed += requestedAmount;
-      console.warn(`[KitBox] Failed to give ${definition.id ?? definition.item}: ${error}`);
+      console.warn(`[KitBox] Failed to create ${boxDefinition.id}: ${error}`);
+      result.failed += 1;
     }
   }
 
