@@ -2,6 +2,4 @@ pack.name=SupplyVault Resource Pack
 pack.description=SupplyVault 資源包
 
 item.kitbox.name=SupplyVault
-item.kitbox.equipment_box.name=SupplyVault 裝備盒
-item.kitbox.tools_box.name=SupplyVault 工具盒
-item.kitbox.supplies_box.name=SupplyVault 補給盒
+item.kitbox.shulker_box.name=潛影盒
