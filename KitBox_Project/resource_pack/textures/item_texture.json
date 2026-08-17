@@ -4,6 +4,15 @@
   "texture_data": {
     "kitbox": {
       "textures": "textures/items/ender_pearl"
+    },
+    "kitbox_equipment_box": {
+      "textures": "textures/items/shulker_box"
+    },
+    "kitbox_tools_box": {
+      "textures": "textures/items/shulker_box"
+    },
+    "kitbox_supplies_box": {
+      "textures": "textures/items/shulker_box"
     }
   }
 }
