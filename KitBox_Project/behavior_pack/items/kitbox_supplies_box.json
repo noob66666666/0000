@@ -1,0 +1,28 @@
+{
+  "format_version": "1.21.40",
+  "minecraft:item": {
+    "description": {
+      "identifier": "kitbox:supplies_box",
+      "menu_category": {
+        "category": "equipment"
+      }
+    },
+    "components": {
+      "minecraft:display_name": {
+        "value": "item.kitbox.supplies_box.name"
+      },
+      "minecraft:icon": {
+        "texture": "kitbox_supplies_box"
+      },
+      "minecraft:max_stack_size": 1,
+      "minecraft:storage_item": {
+        "max_slots": 64,
+        "max_weight_limit": 4096,
+        "allow_nested_storage_items": false
+      },
+      "minecraft:bundle_interaction": {
+        "num_viewable_slots": 64
+      }
+    }
+  }
+}
