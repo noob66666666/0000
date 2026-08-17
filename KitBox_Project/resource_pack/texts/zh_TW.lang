@@ -1,7 +1,7 @@
-pack.name=KitBox Resource Pack
-pack.description=KitBox 資源包
+pack.name=SupplyVault Resource Pack
+pack.description=SupplyVault 資源包
 
-item.kitbox.name=KitBox
-item.kitbox.equipment_box.name=KitBox 裝備盒
-item.kitbox.tools_box.name=KitBox 工具盒
-item.kitbox.supplies_box.name=KitBox 補給盒
+item.kitbox.name=SupplyVault
+item.kitbox.equipment_box.name=SupplyVault 裝備盒
+item.kitbox.tools_box.name=SupplyVault 工具盒
+item.kitbox.supplies_box.name=SupplyVault 補給盒
