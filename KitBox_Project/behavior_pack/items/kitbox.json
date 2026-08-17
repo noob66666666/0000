@@ -16,7 +16,9 @@
       },
       "minecraft:max_stack_size": 1,
       "minecraft:foil": true,
-      "kitbox:use_kitbox": {}
+      "minecraft:custom_components": [
+        "kitbox:use_kitbox"
+      ]
     }
   }
 }
