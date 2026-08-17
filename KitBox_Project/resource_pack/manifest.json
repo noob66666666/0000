@@ -1,17 +1,17 @@
 {
   "format_version": 2,
   "header": {
-    "name": "KitBox Resource Pack Test 2",
-    "description": "KitBox Resource Pack",
+    "name": "SupplyVault Resource Pack",
+    "description": "SupplyVault Resource Pack",
     "uuid": "8e51b7d4-29c6-46fa-91b3-7d02e5c84a16",
-    "version": [2, 0, 2],
+    "version": [2, 0, 3],
     "min_engine_version": [1, 21, 90]
   },
   "modules": [
     {
       "type": "resources",
       "uuid": "b7c4e9a2-15f6-43d8-90ab-6e27c1f58430",
-      "version": [2, 0, 2]
+      "version": [2, 0, 3]
     }
   ]
 }
