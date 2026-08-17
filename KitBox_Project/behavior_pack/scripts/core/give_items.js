@@ -1,17 +1,26 @@
 import { ARMOR } from '../data/armor.js';
+import { WEAPONS } from '../data/weapons.js';
 import { TOOLS } from '../data/tools.js';
 import { MISC } from '../data/misc.js';
 import { createEquipment } from './equipment_factory.js';
 import { getInventory } from './inventory.js';
 
+// 玩家使用 KitBox 後只取得三個儲存盒：
+// 1. 工具 + 武器
+// 2. 防具
+// 3. 其他物品 / 補給
 const BOXES = Object.freeze([
+  { id: 'kitbox:tools_box', definitions: [...TOOLS, ...WEAPONS] },
   { id: 'kitbox:equipment_box', definitions: ARMOR },
-  { id: 'kitbox:tools_box', definitions: TOOLS },
   { id: 'kitbox:supplies_box', definitions: MISC },
 ]);
 
 function addDefinitionToContainer(container, definition) {
-  const item = createEquipment(definition);
+  const item = createEquipment({
+    ...definition,
+    count: definition.count ?? definition.amount ?? 1,
+  });
+
   const remaining = container.addItem(item);
   if (remaining?.amount > 0) {
     throw new Error(`Storage box is full while adding ${definition.id ?? definition.item}`);
@@ -67,7 +76,7 @@ export function giveAll(player) {
       result.dropped += boxResult.dropped;
       result.failed += boxResult.failed;
     } catch (error) {
-      console.warn(`[KitBox] Failed to create ${boxDefinition.id}: ${error}`);
+      console.warn(`[KitBox] Failed to create storage box ${boxDefinition.id}: ${error}`);
       result.failed += 1;
     }
   }
