@@ -1,4 +1,4 @@
-import { ItemStack, system } from '@minecraft/server';
+import { ItemStack, system, world } from '@minecraft/server';
 
 const TEST_ITEM_ID = 'minecraft:apple';
 const TEST_COUNT = 1;
@@ -68,17 +68,7 @@ function runShulkerProbe(player) {
 
 export function scheduleShulkerProbe() {
   system.run(() => {
-    const overworldPlayers = playerList('minecraft:overworld');
-    const player = overworldPlayers[0];
+    const player = world.getDimension('minecraft:overworld').getPlayers()[0];
     if (player) runShulkerProbe(player);
   });
-}
-
-function playerList(dimensionId) {
-  const { world } = requireWorld();
-  return world.getDimension(dimensionId).getPlayers();
-}
-
-function requireWorld() {
-  return require('@minecraft/server');
 }
