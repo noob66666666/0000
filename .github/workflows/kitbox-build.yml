@@ -2,6 +2,14 @@ name: Build KitBox addon
 
 on:
   push:
+    branches:
+      - main
+    paths:
+      - 'KitBox_Project/**'
+      - '.github/workflows/kitbox-build.yml'
+  pull_request:
+    branches:
+      - main
     paths:
       - 'KitBox_Project/**'
       - '.github/workflows/kitbox-build.yml'
