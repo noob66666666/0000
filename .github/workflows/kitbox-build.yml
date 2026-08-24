@@ -50,8 +50,6 @@ jobs:
           rm -rf dist
           mkdir -p dist/inspect/bp dist/inspect/rp
 
-          # A Bedrock .mcaddon is a ZIP container carrying the behavior pack
-          # and resource pack as separate .mcpack files.
           (
             cd KitBox_Project/behavior_pack
             zip -qr ../../dist/Kitbox_Behavior.mcpack .
@@ -65,7 +63,6 @@ jobs:
           zip -q Kitbox.mcaddon Kitbox_Behavior.mcpack Kitbox_Resource.mcpack
           cd ..
 
-          # Verify the addon contains the two packs at its root, not raw pack folders.
           unzip -Z1 dist/Kitbox.mcaddon | grep -Fxq 'Kitbox_Behavior.mcpack'
           unzip -Z1 dist/Kitbox.mcaddon | grep -Fxq 'Kitbox_Resource.mcpack'
           if unzip -Z1 dist/Kitbox.mcaddon | grep -Eq '(^|/)behavior_pack/|(^|/)resource_pack/'; then
@@ -73,7 +70,6 @@ jobs:
             exit 1
           fi
 
-          # Verify both embedded packs are valid and contain their required files.
           unzip -q dist/Kitbox_Behavior.mcpack -d dist/inspect/bp
           unzip -q dist/Kitbox_Resource.mcpack -d dist/inspect/rp
           test -f dist/inspect/bp/manifest.json
@@ -89,5 +85,3 @@ jobs:
           name: Kitbox-mcaddon
           path: dist/Kitbox.mcaddon
           if-no-files-found: error
-
-          # Keep the artifact label stable; the actual deliverable is dist/Kitbox.mcaddon.
