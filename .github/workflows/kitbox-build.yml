@@ -89,3 +89,5 @@ jobs:
           name: Kitbox-mcaddon
           path: dist/Kitbox.mcaddon
           if-no-files-found: error
+
+          # Keep the artifact label stable; the actual deliverable is dist/Kitbox.mcaddon.
